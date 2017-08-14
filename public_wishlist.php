@@ -229,7 +229,7 @@
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

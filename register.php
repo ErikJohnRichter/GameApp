@@ -93,7 +93,12 @@
                 salt, 
                 email,
                 picture,
-                is_subscribed
+                is_subscribed,
+                save_state,
+                square_1,
+                square_2,
+                square_3,
+                register_date
                 
                 
             ) VALUES ( 
@@ -102,7 +107,12 @@
                 :salt, 
                 :email,
                 :picture,
-                :issubscribed
+                :issubscribed,
+                :savestate,
+                :square1,
+                :square2,
+                :square3,
+                :registerdate
                
                 
             ) 
@@ -111,6 +121,8 @@
         $salt = dechex(mt_rand(0, 2147483647)) . dechex(mt_rand(0, 2147483647)); 
          
         $password = hash('sha256', $_POST['password'] . $salt); 
+
+        $timestamp = date('Y-m-d G:i:s', strtotime('-5 hours'));
          
         for($round = 0; $round < 65536; $round++) 
         { 
@@ -123,7 +135,12 @@
             ':salt' => $salt, 
             ':email' => $_POST['email'],
             ':picture' => "user.png",
-            ':issubscribed' => 1
+            ':issubscribed' => 1,
+            ':savestate' => 0,
+            ':square1' => "Players",
+            ':square2' => "My Rating",
+            ':square3' => "Playtime",
+            ':registerdate' => $timestamp
             
         ); 
          
@@ -175,7 +192,11 @@
                 salt, 
                 email,
                 picture,
-                custom_filter
+                custom_filter,
+                save_state,
+                square_1,
+                square_2,
+                square_3
             FROM users 
             WHERE 
                 username = :username 
@@ -224,6 +245,24 @@
             $_SESSION['username'] = $row['username'];
             $_SESSION['picture'] = $row['picture'];
             $_SESSION['customfilter'] = $row['custom_filter'];
+            $_SESSION['savestate'] = $row['save_state'];
+            $_SESSION['square1'] = $row['square_1'];
+            $_SESSION['square2'] = $row['square_2'];
+            $_SESSION['square3'] = $row['square_3'];
+
+            $body = "";
+
+              $emailTo = "erik.j.richter@gmail.com";
+
+              $email = 'erik@erikrichter.com';
+              $replyTo = 'erik@erikrichter.com';
+              $subject = "New GameApp Registration";
+              $body = '<html>'.$_SESSION['username'].' just signed up for GameApp as User #'.$_SESSION['userid'].'.';
+              $body .='<br><br><br>-----<br>This is an automated email sent by <a href="http://admin.erikrichter.com">ErikRichter Admin</a>. Do not reply.<br></html>';
+              $headers = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+              $headers .= 'From: ' .' <'.$email.'>' . "\r\n" . 'Reply-To: ' . $replyTo;
+
+              mail($emailTo, $subject, $body, $headers);
 
             header("Location: stats.php"); 
             die("Redirecting to: stats.php"); 

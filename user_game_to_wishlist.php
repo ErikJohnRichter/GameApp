@@ -38,6 +38,7 @@
           $players = $x['players'];
           $type = $x['type'];
           $cost = $x['cost'];
+          $publisher = $x['publisher'];
           $purchase = $x['purchase_date'];
           $url = $x['url'];
           $rules = $x['rules'];
@@ -53,6 +54,8 @@
           $status = $x['status'];
           $myplaytime = $x['my_playtime'];
           $myplayers = $x['my_players'];
+          $minPlayers = $x['min_players'];
+          $maxPlayers = $x['max_players'];
           $mydescription = $x['my_description'];
             
         }
@@ -61,6 +64,8 @@
           $rulesNotes = null;
         }
     }
+
+
 
         $timestamp = date('Y-m-d G:i:s', strtotime('-5 hours'));
 
@@ -75,6 +80,7 @@
                 rating, 
                 players, 
                 cost, 
+                publisher,
                 purchase_date,
                 url, 
                 rules,
@@ -91,6 +97,8 @@
                 status,
                 my_playtime,
                 my_players,
+                min_players,
+                max_players,
                 add_source
                 
             ) VALUES (
@@ -103,6 +111,7 @@
                 :rating, 
                 :players, 
                 :cost, 
+                :publisher,
                 :date, 
                 :url,
                 :rules,
@@ -119,6 +128,8 @@
                 :status,
                 :myplaytime,
                 :myplayers,
+                :minplayers,
+                :maxplayers,
                 :addsource
 
             ) 
@@ -134,6 +145,7 @@
             ':rating' => null,
             ':players' => $players,
             ':cost' => null,
+            ':publisher' => $publisher,
             ':date' => null,
             ':url' => $url,
             ':rules' => $rules,
@@ -150,6 +162,8 @@
             ':status' => 'Research',
             ':myplaytime' => $bggPlaytime,
             ':myplayers' => $players,
+            ':minplayers' => $minPlayers,
+            ':maxplayers' => $maxPlayers,
             ':addsource' => 'User'
             
         ); 

@@ -6,11 +6,13 @@
     { 
             $gameId = $_POST['game-id'];
 
+            
             $query = " 
             UPDATE game_details
 
             SET 
-                list_type=:listtype
+                list_type=:listtype,
+                status=:status
             
             WHERE
 
@@ -19,6 +21,7 @@
          
         $query_params = array( 
             ':listtype' => 2,
+            ':status' => 'Research',
             ':gameid' => $_POST['game-id'],
             ':userid' => $_SESSION['userid']
 

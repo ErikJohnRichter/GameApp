@@ -102,12 +102,19 @@ $scoring = $_POST['scoring'];
     <div class="media">
       <div class="media-left">
         <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
+          <?php 
+          if ($_SESSION['first']) {
+            $displayUser = $_SESSION['first'];
+          }
+          else {
+            $displayUser = $_SESSION['username'];
+          }
+          echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
         </div><!-- .avatar -->
       </div>
       <div class="media-body">
         <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
+          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($displayUser); ?>!</a></h5>
           <ul>
             <li class="dropdown">
               <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

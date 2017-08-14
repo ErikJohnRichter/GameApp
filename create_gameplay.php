@@ -97,119 +97,7 @@ $scoring = $_POST['scoring'];
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-        
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -220,7 +108,13 @@ $scoring = $_POST['scoring'];
       echo '<a href="game_details.php?id='.$_POST['id'].'" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
     ?>
     <div class="text-center">
-      <h3 class="profile-info-name m-b-lg" style="font-size: 30px; margin-top: 5px;">Add gameplay for<br><?php echo $name; ?></h3>
+      <h3 class="profile-info-name m-b-lg" id="logGameplayTitle" style="font-size: 30px; margin-top: 5px;">Add gameplay for<br><?php echo $name; ?>
+        <label for="logGameplayTitle" style="margin-left: 2px;">
+          <a href="javascript:void(0)" data-toggle="modal" data-target="#gameplayLoggingHelp" aria-expanded="false" style="color: grey; display: inline-block;">
+          <i class="zmdi zmdi-hc-sm zmdi-help-outline"></i>
+         </a>
+        </label>
+      </h3>
       <div>
         <span class="theme-color"></span>
       </div>
@@ -263,6 +157,9 @@ $scoring = $_POST['scoring'];
                     elseif ($scoring == 'other') {
                       $system = "No points awarded";
                     }
+                    elseif ($scoring == 'lose') {
+                      $system = "Loser loses game";
+                    }
                     else {
                       $system = "Highscore wins";
                     }
@@ -283,9 +180,17 @@ $scoring = $_POST['scoring'];
               <div class="form-group">
                   <input type="text" name="location" id="playLocation" class="form-control simple-input" placeholder="Location">
               </div>
+              <div class="form-group pull-left">
+                <input type="checkbox" name="tie-game" id="tieGame" style="margin-left: 2px;"/>
+                <label for="tieGame" style="margin-left: 2px;">Tie Game
+                  <a href="javascript:void(0)" data-toggle="modal" data-target="#tieLoggingHelp" aria-expanded="false" style="color: grey; display: inline-block;">
+                  <i class="zmdi zmdi-hc-sm zmdi-help-outline"></i>
+                 </a>
+                </label>
+              </div>
               <div class="form-group">
                 <select class="form-control simple-input select-box" name="players" id="totalPlayers">
-                  <option selected disabled>Total Players</option>
+                  <option selected value="">Total Players</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -309,6 +214,9 @@ $scoring = $_POST['scoring'];
                       <?php
                   if ($scoring == "other" || $scoring == "coop" || $scoring == "set") {
                       echo '<option selected disabled>Winner</option>';
+                    }
+                    elseif ($scoring == "lose") {
+                      echo '<option selected disabled>Loser</option>';
                     }
                     else {
                       echo '<option id="player-winner" selected disabled>Winner</option>';
@@ -345,6 +253,7 @@ $scoring = $_POST['scoring'];
                           foreach ($rows as $x) {
                             $extraPlayers = $extraPlayers.'<option value="'.$x['player'].'">'.$x['player'].'</option>';
                           }
+                          $extraPlayers = $extraPlayers.'<option value="Tie">Tie</option>';
                       }
                       else {
                         $extraPlayers = '<option disabled>Add players in Profile</option>';
@@ -358,7 +267,7 @@ $scoring = $_POST['scoring'];
                 </select>
               </div>
               <?php
-                  if ($scoring != 'coop' && $scoring != 'other' && $scoring != 'set') { ?>
+                  if ($scoring != 'coop' && $scoring != 'other' && $scoring != 'set' && $scoring != 'lose') { ?>
               <div class="form-group">
                   <input type="text" name="player-1-score" id="playWinningScore" class="form-control simple-input" placeholder="Winning score">
               </div>
@@ -367,7 +276,7 @@ $scoring = $_POST['scoring'];
               <div id="extraPlayers"></div>
               <script>
               var gameScoring = '<?php echo $scoring; ?>';
-              if (gameScoring == 'other' || gameScoring == 'set') {
+              if (gameScoring == 'other' || gameScoring == 'set' || gameScoring == 'lose') {
                 $("#totalPlayers").on("change", function () {
                   var number = parseInt($("#totalPlayers").val());
                   $('#player-winner').text("Player 1");
@@ -440,11 +349,70 @@ $scoring = $_POST['scoring'];
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>
   <!-- /#app-footer -->
+
+  <!-- add help -->
+  <div id="tieLoggingHelp" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tie Game</h4>
+        </div>
+        <div class="modal-body">
+          <p>-If your game ended in a tie, check this box and continue to fill out all player names and scores as normal.</p>
+          <p>-The Game Winner will be logged as "Tie" and all players will be logged as "Other Players."</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- add help -->
+  <div id="gameplayLoggingHelp" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Gameplay Logging Help</h4>
+        </div>
+        <div class="modal-body">
+          <ul style="list-style-type: circle; padding: 1em;">
+            <li style="padding-top: .5em; padding-bottom: .5em;"><b>Date of Play</b> - <span style="color: red;">required</span></li>
+            <li style="padding-top: .5em; padding-bottom: .5em;"><b>Game Winner</b> with or without a score - <span style="color: red;">required</span> <b>-OR-</b></li>
+            <li style="padding-top: .5em; padding-bottom: .5em;"><b>Number of Players</b> - <span style="color: #10C469;">optional, but if set...</span>:
+              <ul style="list-style-type: circle; padding-left: 2em;">
+                <li style="padding-top: .5em; padding-bottom: .5em;"><b>Player Names</b> must be logged for all players - <span style="color: red;">required</span></li>
+                <li style="padding-top: .5em; padding-bottom: .5em;"><b>Player Score</b> must be logged for all players, if applicable - <span style="color: red;">required</span></li> 
+                <li style="padding-top: .5em; padding-bottom: .5em;">GameApp will automatically calculate the winner and loser based on the game's scoring mechanic</li>
+              </ul>
+            </li>
+            <li style="padding-top: .5em; padding-bottom: .5em;"><b>Tie Game</b> - <span style="color: #10C469;">optional</span>
+              <ul style="list-style-type: circle; padding-left: 2em;">
+                <li style="padding-top: .5em; padding-bottom: .5em;">If your game ended in a tie, check this box and continue to fill out all player names and scores as normal</li>
+                <li style="padding-top: .5em; padding-bottom: .5em;">The Game Winner will be logged as "Tie" and all players will be logged as "Other Players."</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </main>
 <!--========== END app main -->
 

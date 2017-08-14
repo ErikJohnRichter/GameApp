@@ -1,0 +1,1 @@
+<div class="copyright pull-right">&copy; Erik Richter 2017</div>

@@ -45,7 +45,7 @@ $query = "
     }
 
 
-  if ($sort != 'other' && $sort != 'coop' && $sort != 'set') { 
+  if ($sort != 'other' && $sort != 'coop' && $sort != 'set' && $sort != 'lose') { 
     if ($sort == null) {
       $sort = "desc";
       $highscore = "(highest)";
@@ -145,117 +145,7 @@ $query = "
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -300,6 +190,7 @@ $query = "
           $query_params = array( 
               ':id' => $gameplayId,
               ':userid' => $_SESSION['userid']
+
           ); 
            
           try 
@@ -316,6 +207,7 @@ $query = "
            if ($rows) {
               foreach ($rows as $x) {
                 $notes = $x['notes'];
+                $picture = $x['picture'];
                 $lastplayed = strtotime($x['timestamp']);
                 echo '<div class="row text-center">';
                 echo '<h3 style="margin-top:0px;">'.date('l, F d, Y', $lastplayed).'</h3>';
@@ -326,12 +218,19 @@ $query = "
                 echo '<tr><th width="70%"><hr></th><th width="30%"><hr></th></tr>';
                 if ($x['players']) { echo '<tr><td width="70%"><b>Players:</b></td><td width="30%">'.$x['players'].'</td></tr>'; }
                 if ($x['play_time']) { echo '<tr><td><b>Play time:</b></td><td>'.$x['play_time'].' mins</td></tr>'; }
-                if ($x['winner']) { echo '<tr><td><b>Winner:</b></td><td>'.$x['winner'].'</td></tr>'; }
+                if ($x['winner']) { 
+                  if ($sort == 'lose') {
+                    echo '<tr><td><b>Loser:</b></td><td>'.$x['winner'].'</td></tr>'; 
+                  }
+                  else {
+                    echo '<tr><td><b>Winner:</b></td><td>'.$x['winner'].'</td></tr>'; 
+                  }
+                }
                 if ($x['winning_score']) { echo '<tr><td><b>Winning score:</b></td><td>'.($x['winning_score'] + 0).'</td></tr>'; }
                 
               }
           }
-          if ($sort != 'other' && $sort != 'coop' && $sort != 'set') {
+          if ($sort != 'other' && $sort != 'coop' && $sort != 'set' && $sort != 'lose') {
             $query = " 
                 SELECT * FROM gameplay 
                 WHERE 
@@ -382,7 +281,7 @@ $query = "
 
           $rows = $stmt->fetchAll();
            if ($rows) {
-              if ($sort != 'other' && $sort != 'coop' && $sort != 'set') { 
+              if ($sort != 'other' && $sort != 'coop' && $sort != 'set' && $sort != 'lose') { 
                 echo '<tr><td colspan="2"><hr></td></tr><tr><td colspan="2" style="padding-bottom: 15px;"><b>Other player scores:</b></td></tr>';
                   foreach ($rows as $x) {
                     if ($x['extra_players']) { echo '<tr><td>'.$x['extra_players'].'</td><td>'.($x['extra_players_score'] + 0).'</td></tr>'; }
@@ -390,7 +289,12 @@ $query = "
                 
               }
               else {
-                echo '<tr><td colspan="2"><hr></td></tr><tr><td colspan="2" style="padding-bottom: 15px;"><b>Other players:</b></td></tr>';
+                if ($sort == 'lose') {
+                  echo '<tr><td colspan="2"><hr></td></tr><tr><td colspan="2" style="padding-bottom: 15px;"><b>Winners:</b></td></tr>';
+                }
+                else {
+                  echo '<tr><td colspan="2"><hr></td></tr><tr><td colspan="2" style="padding-bottom: 15px;"><b>Other players:</b></td></tr>';
+                }
                   foreach ($rows as $x) {
                     if ($x['extra_players']) { echo '<tr><td>'.$x['extra_players'].'</td></tr>'; }
                   }
@@ -398,6 +302,10 @@ $query = "
               }
             }
             if ($notes) { echo '<tr><td colspan="2"><hr></td></tr><tr><td colspan="2">'.$notes.'</td></tr>'; } else { echo '<br>';}
+
+            if ($picture) {
+              echo '<tr><td colspan="2"><hr><img src="assets/images/gameplays/'.$picture.'" alt="gameplay_img" style="max-width: 100%; margin: 0 auto;"/></td></tr>';
+            }
           ?>
           </table>
         </div>
@@ -423,7 +331,7 @@ $query = "
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

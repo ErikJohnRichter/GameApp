@@ -58,6 +58,8 @@
 	<link rel="stylesheet" href="assets/css/app.css">
 	<!-- endbuild -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
+  <script src="libs/bower/jquery/dist/jquery.js"></script>
+  <script src="libs/bower/jquery-ui/jquery-ui.min.js"></script>
 	<script src="libs/bower/breakpoints.js/dist/breakpoints.min.js"></script>
 	<script>
 		Breakpoints();
@@ -121,124 +123,7 @@
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-        
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="javascript:void(0)" data-toggle="collapse" class="livesearch" data-target="#navbar-search" aria-expanded="false">
-            <i class="menu-icon zmdi zmdi-hc-lg zmdi-search"></i>
-            <span class="menu-text">Search</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -273,16 +158,22 @@
                   bLengthChange: false,
                   iDisplayLength: 10,
                   pagingType: 'numbers',
-                  columnDefs: [{ 'orderable': false, responsivePriority: 1, 'targets': 0, 'render': function(data, type, row) {return '<img src=&quot;images/'+data+'.jpg&quot; onerror=&quot;this.src=\'./images/noimage.jpg\'&quot; style=&quot;max-height:100px;max-width:50px;padding-right:0px;margin-right:0px;&quot;/>';}}, { responsivePriority: 2, 'targets': 2 }, { responsivePriority: 3, 'targets': 3 }, { 'width': '20%', 'targets': 8 }, { 'visible': false, 'targets': 1 }],
-                  order: [[ 3, 'desc' ]],
+                  columnDefs: [{ 'orderable': false, responsivePriority: 1, 'targets': 0, 'render': function(data, type, row) {return '<img src=&quot;images/'+data+'.jpg&quot; onerror=&quot;this.src=\'./images/noimage.jpg\'&quot; style=&quot;max-height:100px;max-width:50px;padding-right:0px;margin-right:0px;&quot;/>';}}, 
+                  { 'orderable': false, responsivePriority: 1, 'targets': 11, 'render': function(data, type, row) {if (data != &quot;&quot;) {return '<a href=&quot;move_order_up.php?id='+data+'&quot;><i class=&quot;fa fa-caret-up&quot;></i></a><br><a href=&quot;move_order_down.php?id='+data+'&quot;><i class=&quot;fa fa-caret-down&quot;></a>';} else {return null;}}}, 
+                  { responsivePriority: 2, 'targets': 2 }, 
+                  { className: 'game-status', responsivePriority: 3, 'targets': 3 }, 
+                  { 'width': '20%', 'targets': 8 }, 
+                  { 'visible': false, 'targets': 1 },
+                  { 'visible': false, 'targets': 10 }],
+                  order: [[ 3, 'desc' ], [ 10, 'asc' ]],
                   ajax: 'get_wish_list.php',
                   initComplete: function( settings, json ) { $('#wishlistBody').fadeIn(200);}
                 }" class="table" cellspacing="0" width="100%">
               <thead>
-                <tr><th class="all">&nbsp;</th><th>&nbsp;</th><th class="all">Name</th><th class="all">Status</th><th>Rating</th><th>Players</th><th>Cost</th><th>Rules</th><th>Notes</th><th>Type</th></tr>
+                <tr><th class="all">&nbsp;</th><th>&nbsp;</th><th class="all">Name</th><th class="all game-status">Status</th><th>Publisher</th><th>Players</th><th>Cost</th><th>Rules</th><th>Notes</th><th>Type</th><th>&nbsp;</th><th class="all">&nbsp;</th></tr>
               </thead>
               <tfoot>
-                <tr><th>&nbsp;</th><th>&nbsp;</th><th>Name</th><th>Status</th><th>Rating</th><th>Players</th><th>Cost</th><th>Rules</th><th>Notes</th><th>Type</th></tr>
+                <tr><th>&nbsp;</th><th>&nbsp;</th><th>Name</th><th>Status</th><th>Publisher</th><th>Players</th><th>Cost</th><th>Rules</th><th>Notes</th><th>Type</th><th>&nbsp;</th><th>&nbsp;</th></tr>
               </tfoot>
             </table>
           </div><!-- .widget-body -->
@@ -324,7 +215,7 @@
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>
@@ -362,13 +253,14 @@
 <!--========== END app main -->
 
 	<!-- build:js assets/js/core.min.js -->
-	<script src="libs/bower/jquery/dist/jquery.js"></script>
-  <script src="libs/bower/jquery-ui/jquery-ui.min.js"></script>
+	
 	<script src="libs/bower/jQuery-Storage-API/jquery.storageapi.min.js"></script>
 	<script src="libs/bower/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
 	<script src="libs/bower/jquery-slimscroll/jquery.slimscroll.js"></script>
 	<script src="libs/bower/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
 	<script src="libs/bower/PACE/pace.min.js"></script>
+  <script src="https://cdn.datatables.net/rowreorder/1.2.0/js/dataTables.rowReorder.min.js"></script>
+  
 	<!-- endbuild -->
 
 	<!-- build:js assets/js/app.min.js -->

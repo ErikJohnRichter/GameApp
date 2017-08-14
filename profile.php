@@ -37,7 +37,7 @@ $query = "
         foreach ($rows as $x) {
           $userFirstName = $x['first'];
           $userLastName = $x['last'];
-          
+          $searchFilterString = $x['custom_filter'];
         }
     }
 
@@ -156,111 +156,7 @@ $query = "
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="stats.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-       <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-        
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -271,7 +167,7 @@ $query = "
 
     <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix">
-    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Your Photo</h3>
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">My Photo</h3>
     <div class="form-group" id="changeAdminCredentials">
     <form action="add_photo.php" method="post" enctype="multipart/form-data">
     <table align="center" style="margin: 0 auto;">
@@ -300,7 +196,7 @@ $query = "
 
     <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix">
-    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Your Name</h3>
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">My Name</h3>
     <div class="form-group" id="changeAdminCredentials">
     <form action="add_name.php" method="post">
     <table align="center" style="margin: 0 auto;">
@@ -337,7 +233,7 @@ $('#addFirstName').keyup(function () {
 
     <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix">
-    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Your Players</h3>
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">My Players</h3>
     <div class="form-group" id="changeAdminCredentials">
     <form action="add_player.php" method="post">
     <table align="center" style="margin: 0 auto;">
@@ -434,9 +330,149 @@ $("#userPlayers").change (function() {
 </script>
 </div>   
 
+
+
 <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix">
-    <h3 class="text-center" style="margin-top:8px; margin-bottom: 40px;">Rating Definitions</h3>
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">My Custom Types</h3>
+    <div class="form-group" id="changeCustomType">
+    <form action="add_custom_type.php" method="post">
+    <table align="center" style="margin: 0 auto;">
+        <tbody>
+        <tr> 
+            <td>
+                <input class="form-control simple-input" id="addTypeInput" type="text" name="type" style="font-size: 16px" placeholder="Custom Game Type"/>
+            </td>
+        
+            <td><button id="addType" type="submit" class="btn btn-success" style="margin-left: 10px;">Add</button></td>
+            
+        </tr>
+    </tbody>
+    </table>
+    </form>
+    <br>
+    <table align="center" style="margin: 0 auto;">
+        <tbody>
+        <tr> 
+            <td>
+    <select class="form-control simple-input select-box" name="types" id="userTypes" style="font-size: 16px; width: 240px;">
+      <option selected value="">Custom Types</option>
+      <?php
+        $query = " 
+        SELECT * FROM custom_types 
+        WHERE 
+            user_id = :userid
+            ORDER BY type asc
+        "; 
+         
+        $query_params = array( 
+            ':userid' => $_SESSION['userid']
+        ); 
+         
+        try 
+        { 
+            $stmt = $db->prepare($query); 
+            $result = $stmt->execute($query_params); 
+        } 
+        catch(PDOException $ex) 
+        { 
+            die($ex);
+        } 
+
+        $rows = $stmt->fetchAll();
+        if ($rows) {
+            foreach ($rows as $x) {
+                echo '<option value="'.$x['id'].'">'.$x['type'].'</option>';
+                
+            }
+        }
+        else {
+          echo '<option disabled>None added yet.</option>';
+        }
+      ?>
+    </select>
+  </td>
+  <td>
+    <?php echo '<a id="deleteTypesButton"><button id="deleteType" class="btn btn-danger" style="margin-left: 10px; margin-right: 14px;"><i class="fa fa-times" aria-hidden="true"></i></button></a>'; ?>
+    </td>
+            
+        </tr>
+    </tbody>
+    </table>
+  </div>
+  </div>
+    <script>
+  $('#addType').attr('disabled', true);
+$('#addTypeInput').keyup(function () {
+   var disable = false;
+       $('#addTypeInput').each(function(){
+            if($(this).val().length < 2){
+                 disable = true;      
+            }
+       });
+  $('#addType').prop('disabled', disable);
+});
+</script>
+
+<script>
+  $('#deleteType').attr('disabled', true);
+$("#userTypes").change (function() {
+  var disable = false;
+    $("#deleteTypesButton").attr("href", "delete_custom_type.php?id=" + $(this).val());
+    if($(this).val().length < 1){
+                 disable = true;      
+            }
+            else {
+              disable = false; 
+            }
+
+  $('#deleteType').prop('disabled', disable);
+});
+</script>
+</div>   
+
+
+<div class="col-md-4 col-md-offset-4">
+      <div class="widget p-md clearfix text-center">
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Custom Game Status</h3>
+    <small>Create a custom status for your Game Library's game statuses. Adding this will also set the red Stats Dashboard button to automatically search for this word in your Game Library's game statuses and/or notes.</small><br><br>
+    <div class="form-group" id="changeAdminCredentials">
+    <form action="add_custom_filter.php" method="post">
+    <table align="center" style="margin: 0 auto;">
+        <tbody>
+        <tr> 
+            <td>
+                <input class="form-control simple-input" id="addCustomString" type="text" name="custom-string" style="font-size: 16px;" placeholder="Custom Filter Word" value="<?php echo $searchFilterString; ?>"/>
+            </td>
+        
+            <td><button id="setCustomString" type="submit" class="btn btn-success" style="margin-left: 10px;">Set</button></td>
+            
+        </tr>
+    </tbody>
+    </table>
+    </form>
+  </div>
+  </div>
+  <script>
+  $('#setCustomString').attr('disabled', true);
+$('#addCustomString').keyup(function () {
+   var disable = false;
+       /*$('#addCustomString').each(function(){
+            if($(this).val().length == 0){
+                 disable = true;      
+            }
+       });*/
+  $('#setCustomString').prop('disabled', disable);
+});
+</script>
+</div>   
+
+
+
+
+<div class="col-md-4 col-md-offset-4">
+      <div class="widget p-md clearfix">
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 40px;">My Rating Definitions</h3>
     <div class="col-xs-12" style="margin: 0 auto;">
       <?php if ($rowz) { ?>
         <div class="col-xs-1" style="margin-bottom: 10px;"><b>10</b></div><div class="col-xs-10" style="margin-bottom: 10px;"><?php echo $ten; ?></div>
@@ -474,7 +510,7 @@ $("#userPlayers").change (function() {
   <div class="col-md-12 p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

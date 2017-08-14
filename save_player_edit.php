@@ -14,12 +14,21 @@
         else {
             $players = $_POST['minPlayers'];
         }
+
+        $minPlayers = $_POST['minPlayers'];
+        $maxPlayers = $_POST['maxPlayers'];
+
+        if (!$_POST['maxPlayers']) {
+            $maxPlayers = $_POST['minPlayers'];
+        }
         
         $query = " 
             UPDATE game_details
 
             SET 
-                my_players=:myplayers
+                my_players=:myplayers,
+                min_players=:minplayers,
+                max_players=:maxplayers
             
             WHERE
 
@@ -29,6 +38,8 @@
         $query_params = array( 
 
             ':myplayers' => $players,
+            ':minplayers' => $minPlayers,
+            ':maxplayers' => $maxPlayers,
             ':gameid' => $_POST['game-id'],
             ':userid' => $_SESSION['userid']
 

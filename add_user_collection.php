@@ -101,6 +101,7 @@ set_time_limit(900);
             $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
             $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
             $bggYear = $sxml->boardgame[0]->yearpublished;
+            $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
             $bggImageThumb = $sxml->boardgame[0]->thumbnail;
             $bggImageUrl = 'https:'.$bggImageThumb;
             
@@ -139,10 +140,48 @@ set_time_limit(900);
                 $players = $bggMinPlayers."-".$bggMaxPlayers;
             }
 
+            $minPlayers = $bggMinPlayers;
+            $maxPlayers = $bggMaxPlayers;
+
+            if (!$bggMaxPlayers) {
+                $maxPlayers = $bggMinPlayers;
+            }
+
+            if ($status == 'Want') {
+
+                $query = " 
+                    SELECT COUNT(*) 
+                    FROM game_details
+                    WHERE wishlist_order IS NOT null AND user_id = :userid AND list_type = :listtype;
+                "; 
+                 
+                $query_params = array( 
+                    ':userid' => $_SESSION['userid'],
+                    ':listtype' => 2
+                ); 
+                 
+                try 
+                { 
+                    $result = $db->prepare($query); 
+                    $result->execute($query_params); 
+                    $wishlistGameCount = $result->fetchColumn(0);
+                } 
+                catch(PDOException $ex) 
+                { 
+                    die($ex); 
+                } 
+
+                $wishlistOrder = $wishlistGameCount + 1;
+            }
+            else {
+                $wishlistOrder = null;
+            }
+
             $query = " 
                 INSERT INTO game_details ( 
                     user_id,
                     list_type,
+                    wishlist_order,
                     name, 
                     timestamp,
                     gameplay_knowledge, 
@@ -150,6 +189,7 @@ set_time_limit(900);
                     rating, 
                     players, 
                     cost, 
+                    publisher,
                     purchase_date,
                     url, 
                     rules,
@@ -165,11 +205,14 @@ set_time_limit(900);
                     status,
                     my_playtime,
                     my_players,
+                    min_players,
+                    max_players,
                     add_source
                     
                 ) VALUES (
                     :userid, 
                     :listtype,
+                    :wishlistorder,
                     :name, 
                     :timestamp,
                     :knowledge, 
@@ -177,6 +220,7 @@ set_time_limit(900);
                     :rating, 
                     :players, 
                     :cost, 
+                    :publisher,
                     :date, 
                     :url,
                     :rules,
@@ -192,6 +236,8 @@ set_time_limit(900);
                     :status,
                     :myplaytime,
                     :myplayers,
+                    :minplayers,
+                    :maxplayers,
                     :addsource
                 ) 
             "; 
@@ -199,6 +245,7 @@ set_time_limit(900);
             $query_params = array( 
                 ':userid' => $_SESSION['userid'],
                 ':listtype' => $listType,
+                ':wishlistorder' => $wishlistOrder,
                 ':name' => $bggGameName,
                 ':timestamp' => $timestamp,
                 ':knowledge' => "Need Rules",
@@ -206,6 +253,7 @@ set_time_limit(900);
                 ':rating' => "",
                 ':players' => $players,
                 ':cost' => "",
+                ':publisher' => $publisher,
                 ':date' => "",
                 ':url' => $bggUrl,
                 ':rules' => "",
@@ -221,6 +269,8 @@ set_time_limit(900);
                 ':status' => $status,
                 ':myplaytime' => $bggPlayTime,
                 ':myplayers' => $players,
+                ':minplayers' => $minPlayers,
+                ':maxplayers' => $maxPlayers,
                 ':addsource' => 'Import'
                 
             ); 

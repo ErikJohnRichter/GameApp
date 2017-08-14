@@ -31,6 +31,8 @@
             die($ex);
         } 
 
+        $_SESSION['first'] = $_POST['first'];
+
         header("Location: profile.php"); 
         die("Redirecting to: profile.php");
 

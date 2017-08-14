@@ -13,7 +13,7 @@
 
 $bggGameId = $_GET['id'];
 $list = $_GET['list'];
-if ($list != "search") {
+if ($list != "search" && $list != "history") {
   $list = "";
 }
 
@@ -33,6 +33,7 @@ $xmlurl = 'https://www.boardgamegeek.com/xmlapi/boardgame/'.$bggGameId.'?stats=1
             $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
             $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
             $bggYear = $sxml->boardgame[0]->yearpublished;
+            $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
             $bggImageThumb = $sxml->boardgame[0]->thumbnail;
             $bggImageUrl = 'https:'.$bggImageThumb;
            
@@ -71,7 +72,7 @@ $xmlurl = 'https://www.boardgamegeek.com/xmlapi/boardgame/'.$bggGameId.'?stats=1
                 $players = $bggMinPlayers."-".$bggMaxPlayers;
             }
             if ($bggYear) {
-              $year = '&nbsp;('.$bggYear.')';
+              $year = $bggYear;
             }
             else {
               $year = "";
@@ -85,6 +86,40 @@ if($_GET['string']) {
 else {
   $urlName = $bggGameName;
 }
+      $timestamp = date('Y-m-d G:i:s', strtotime('-5 hours'));
+     
+      $query = " 
+            INSERT INTO search_history ( 
+                user_id,
+                visited_game_id,
+                visited_game_name,
+                timestamp
+                
+            ) VALUES (
+                :userid, 
+                :gameid,
+                :gamename,
+                :timestamp
+            ) 
+        "; 
+         
+        $query_params = array( 
+            ':userid' => $_SESSION['userid'],
+            ':gameid' => $bggGameId,
+            ':gamename' => $bggGameName,
+            ':timestamp' => $timestamp
+            
+        ); 
+         
+        try 
+        { 
+            $stmt = $db->prepare($query); 
+            $result = $stmt->execute($query_params); 
+        } 
+        catch(PDOException $ex) 
+        { 
+            die($ex);
+        } 
 
 ?>
 
@@ -166,119 +201,7 @@ else {
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-      
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -291,6 +214,9 @@ else {
       echo '<input type="hidden" name="search-string" value="'.$urlName.'">';
       echo '<a href="" style="color: silver;" onclick="parentNode.submit();return false;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
       echo '</form>';
+    }
+    elseif ($list == "history") {
+      echo '<a href="search_history.php" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
     }
     else {
       echo '<a href="bgg_hotlist.php" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
@@ -315,15 +241,27 @@ else {
           <?php
       
           if (strlen($bggGameName) > 18) {
-            echo '<h3 class="profile-info-name m-b-lg" style="font-size: 25px; margin-top: 5px; margin-left:8px; margin-right: 4px; display:inline-block;">'.$bggGameName.'<small>'.$year.'</small></h3>';
+            echo '<h3 class="profile-info-name m-b-lg" style="font-size: 25px; margin-top: 5px; margin-left:8px; margin-right: 4px; display:inline-block; width: 200px;">'.$bggGameName.'</h3>';
           }
           else {
-            echo '<h3 class="profile-info-name m-b-lg" style="font-size: 30px; margin-top: 5px; margin-left:8px; margin-right: 4px; display:inline-block;">'.$bggGameName.'</h3><small>'.$year.'</small>';
+            echo '<h3 class="profile-info-name m-b-lg" style="font-size: 30px; margin-top: 5px; margin-left:8px; margin-right: 4px; display:inline-block;">'.$bggGameName.'</h3>';
           }
            ?>
           </td>
         </tr>
+
       </table>
+      <?php 
+        if ($bggPublisher && $year) {
+          echo '<p class="text-center" style="margin-bottom: -10px;"><small>'.$year.' - '.$bggPublisher.'</small></p>';
+        } 
+        elseif ($bggPublisher) {
+          echo '<p class="text-center" style="margin-bottom: -10px;"><small>'.$bggPublisher.'</small></p>';
+        }
+        elseif ($year) {
+          echo '<p class="text-center" style="margin-bottom: -10px;"><small>'.$year.'</small></p>';
+        }
+      ?>
     </div>
   </div><!-- .profile-cover -->
 
@@ -494,10 +432,10 @@ else {
           <!-- tabs list -->
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active" style="font-size: 18px;"><a href="#description" aria-controls="photos" role="tab" data-toggle="tab">Description</a></li>
-            <?php echo '<li role="presentation" style="font-size: 18px;"><a href="get_game_reviews.php?id='.$bggGameId.'&name='.$bggGameName.'&list='.$list.'" style="color: #188ae2">Reviews</a></li>'; ?>
+            <?php echo '<li role="presentation" style="font-size: 18px;"><a href="get_game_reviews.php?id='.$bggGameId.'&name='.$bggGameName.'&list='.$list.'" >Reviews</a></li>'; ?>
             <?php $searchName = $bggGameName;
                     $searchName = str_replace(' ','%20',$searchName);
-                    echo '<li role="presentation" style="font-size: 18px;"><a href="http://www.boardgameprices.com/compare-prices-for?q='.$searchName.'" target="_blank" style="color: #188ae2">Prices</a></li>'; ?>
+                    echo '<li role="presentation" style="font-size: 18px;"><a href="http://www.boardgameprices.com/compare-prices-for?q='.$searchName.'" target="_blank" >Prices</a></li>'; ?>
           </ul><!-- .nav-tabs -->
 
           <!-- Tab panes -->
@@ -536,7 +474,7 @@ else {
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

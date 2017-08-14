@@ -31,7 +31,7 @@
 
         $_SESSION['customfilter'] = $_POST['custom-string'];
 
-        header("Location: settings.php"); 
-        die("Redirecting to: settings.php");
+        header("Location: profile.php"); 
+        die("Redirecting to: profile.php");
 
 ?>

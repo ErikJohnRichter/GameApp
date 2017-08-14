@@ -19,6 +19,7 @@
           $bggMaxPlayTime = $sxml->boardgame[0]->maxplaytime;
           $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
           $bggYear = $sxml->boardgame[0]->yearpublished;
+          $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
           /*$bggGameName = $sxml->boardgame[0]->name;*/
           $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
 

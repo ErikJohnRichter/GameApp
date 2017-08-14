@@ -9,7 +9,8 @@
             UPDATE game_details
 
             SET 
-                type=:type
+                type=:type,
+                type2=:type2
             
             WHERE
 
@@ -19,6 +20,7 @@
         $query_params = array( 
 
             ':type' => $_POST['type'],
+            ':type2' => $_POST['type2'],
             ':gameid' => $_POST['game-id'],
             ':userid' => $_SESSION['userid']
 

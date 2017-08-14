@@ -88,119 +88,7 @@
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-        
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -267,31 +155,16 @@
                 </div>
                 <div class="form-group">
                   <select class="form-control simple-input select-box" name="type" id="gameType">
-                      <option selected disabled>Type</option>
-                      <option value="Abstract Strategy">Abstract Strategy</option>
-                      <option value="Area Control">Area Control</option>
-                      <option value="Bluffing">Bluffing</option>
-                      <option value="Card Drafting">Card Drafting</option>
-                      <option value="Card Game">Card Game</option>
-                      <option value="Children Game">Children Game</option>
-                      <option value="Cooperative">Cooperative</option>
-                      <option value="Crossover">Crossover</option>
-                      <option value="Deck Building">Deck Building</option>
-                      <option value="Dexterity">Dexterity</option>
-                      <option value="Dice">Dice</option>
-                      <option value="Deduction">Deduction</option>
-                      <option value="Educational">Educational</option>
-                      <option value="Expansion">Expansion</option>
-                      <option value="Filler">Filler</option>
-                      <option value="Horror">Horror</option>
-                      <option value="Party">Party</option>
-                      <option value="Point to Point">Point to Point</option>
-                      <option value="Territory Building">Territory Building</option>
-                      <option value="Tile Laying">Tile Laying</option>
-                      <option value="Trivia">Trivia</option>
-                      <option value="War Game">War Game</option>
-                      <option value="Worker Placement">Worker Placement</option>
-                      <option value="Needs a Category">Needs a Category</option>
+                      <option selected disabled>Primary Type</option>
+                      <?php include("game_types.php"); ?>
+                      <option value="">None</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <select class="form-control simple-input select-box" name="type2" id="gameType2">
+                      <option selected disabled>Secondary Type</option>
+                      <?php include("game_types.php"); ?>
+                      <option value="">None</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -301,6 +174,8 @@
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                     <select class="form-control simple-input select-box" name="maxPlayers" id="gameMaxPlayers" style="display: inline-block; width: 49%; float: right;">
                       <option selected disabled>Max Players</option>
@@ -331,6 +206,9 @@
                 </div>
                 <div class="form-group">
                   <input type="text" name="cost" id="gameCost" class="form-control simple-input" placeholder="Cost">
+                </div>
+                <div class="form-group">
+                  <input type="text" name="publisher" id="gamePublisher" class="form-control simple-input" placeholder="Publisher">
                 </div>
                 <!--<div class="form-group">
                   <input type="file" class="form-control" name="picture" id="gamePicture">
@@ -406,7 +284,7 @@
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>
@@ -450,7 +328,9 @@
             -Number of players<br>
             -Game description<br>
             -Play time<br>
-            -Game weight</p>
+            -Game weight<br>
+            -Publisher<br>
+            -Published year<br></p>
           <p>You may always add or edit the BGG URL at a future date.</p>
           <p>To integrate with BGG without needing to enter the game URL, simply add games by searching for them in the BGG search bar on your stats page</p>
         </div>

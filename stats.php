@@ -132,6 +132,10 @@
         } 
 
         $averageRating = ($sumOfRatings/$ratedGameCount);
+
+        if (is_nan($averageRating)) {
+          $averageRating = 0;
+        }
         
 
         $query = " 
@@ -158,7 +162,7 @@
         $query = " 
             SELECT COUNT(*) 
             FROM game_details
-            WHERE (user_id = :userid AND list_type=1) AND gameplay_knowledge = :customfilter;
+            WHERE (user_id = :userid AND list_type=1) AND (gameplay_knowledge = :customfilter OR notes LIKE '%".$customSearchString."%');
         "; 
          
         $query_params = array( 
@@ -218,6 +222,10 @@
         { 
             die($ex); 
         } 
+
+        if ($valueOfLibrary == null) {
+          $valueOfLibrary = 0;
+        }
 
         $query = " 
             SELECT COUNT(*) 
@@ -439,125 +447,7 @@
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="javascript:void(0)" data-toggle="collapse" class="livesearch" data-target="#navbar-search" aria-expanded="false">
-            <i class="menu-icon zmdi zmdi-hc-lg zmdi-search"></i>
-            <span class="menu-text">Search</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- navbar search -->
@@ -598,7 +488,7 @@
     </div><!-- .row -->
    
     <div class="row">
-      <div class="col-md-6 col-sm-6">
+      <div class="col-md-4 col-sm-4">
         <a href="library.php" style="color: #6a6c6f;"><div class="widget p-md clearfix feature">
           <div class="pull-left">
             <h3 class="widget-title">Total Number of Games</h3>
@@ -608,25 +498,7 @@
         </div></a><!-- .widget -->
       </div>
 
-      <!--<div class="col-md-4 col-sm-4">
-        <div class="widget p-md clearfix" style="background: #white;">
-          <div class="pull-left">
-              <div class="form-group" style="margin-top: 10px; margin-bottom: 10px;">
-                <div class='input-group'>
-                  <input type="text" name="search-string" class="form-control bggSearch livesearch" data-toggle="collapse" data-target="#navbar-search" aria-expanded="false" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search My Games" style="background: white;">
-                  <span class="input-group-addon text-white bggSpan bggSpan1" style="background-color: white;">
-                    <a href="library.php"><span class="glyphicon glyphicon-book"></span></a>
-                  </span>
-                  <span class="input-group-addon text-white bggSpan" style="background-color: white;">
-                    <a href="wish_list.php"><span class="glyphicon glyphicon-gift" style="color: #10C469;"></span></a>
-                  </span>
-                </div>
-              </div>
-          </div>
-        </div>
-      </div>-->
-
-      <div class="col-md-6 col-sm-6">
+      <div class="col-md-4 col-sm-4">
         <div class="widget p-md clearfix" style="background: #white;">
           <div class="pull-left">
             <form action="search_bgg.php" method="post" id="searchBGGForm">
@@ -635,6 +507,9 @@
                   <input type="text" name="search-string" class="form-control bggSearch" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="BoardGameGeek" style="background: white;">
                   <span class="input-group-addon text-white bggSpan bggSpan1" style="background-color: white;">
                     <a href="#" onclick="document.getElementById('searchBGGForm').submit();"><span class="glyphicon glyphicon-search"></span></a>
+                  </span>
+                  <span class="input-group-addon text-white bggSpan bggSpan1" style="background-color: white;">
+                    <a href="search_history.php"><span class="glyphicon glyphicon-time" style="color:#10C469;"></span></a>
                   </span>
                   <span class="input-group-addon text-white bggSpan" style="background-color: white;">
                     <a href="bgg_hotlist.php"><span class="glyphicon glyphicon-fire" style="color: #FF5B5B;"></span></a>
@@ -645,6 +520,20 @@
           </div>
         </div><!-- .widget -->
       </div>
+
+
+      <div class="col-md-4 col-sm-4">
+        <a href="advanced_search.php">
+          <div class="widget stats-widget feature p-md clearfix">
+            <div class="pull-left">
+              <h3 class="widget-title">Advanced Search</h3>
+              <small class="text-color">of your Game Library</small>
+            </div>
+            <span class="pull-right big-icon watermark"><i class="fa fa-search"></i></span>
+          </div><!-- .widget -->
+        </a>
+      </div>
+
 
     </div><!-- .row -->
 
@@ -717,10 +606,12 @@
 
       
       <div class="col-md-4 col-sm-4">
-        <div class="widget">
-          <header class="widget-header">
-            <h4 class="widget-title">Recently Played</h4>
-          </header>
+        <div class="widget stats-widget feature">
+          <a href="game_log.php">
+            <header class="widget-header">
+              <h4 class="widget-title">Recently Played</h4>
+            </header>
+          </a>
           <hr class="widget-separator"/>
           <div class="widget-body">
             <div class="table-responsive">              
@@ -738,10 +629,12 @@
       </div><!-- END column -->
 
       <div class="col-md-4 col-sm-4">
-        <div class="widget">
-          <header class="widget-header">
-            <h4 class="widget-title">Most Played</h4>
-          </header>
+        <div class="widget stats-widget feature">
+          <a href="most_played.php">
+            <header class="widget-header">
+              <h4 class="widget-title">Most Played</h4>
+            </header>
+          </a>
           <hr class="widget-separator"/>
           <div class="widget-body">
             <div class="table-responsive">              
@@ -759,6 +652,7 @@
       </div><!-- END column -->
 
       
+      
 
       <div class="col-md-4 col-sm-4">
         <div class="widget p-md clearfix">
@@ -770,6 +664,8 @@
         </div><!-- .widget -->
       </div>
 
+
+
       <div class="col-md-4 col-sm-4">
         <div class="widget p-md clearfix">
           <div class="pull-left">
@@ -779,6 +675,7 @@
           <span class="pull-right fz-lg fw-500"><?php echo $valueOfLibrary; ?></span><span class="pull-right fz-lg fw-500">$</span>
         </div><!-- .widget -->
       </div>
+
 
       <div class="col-md-12 col-sm-12">
         <div class="widget p-md clearfix">
@@ -840,7 +737,7 @@
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

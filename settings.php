@@ -37,7 +37,8 @@
           $public = $x['public'];
           $publicLibrary = $x['library_public'];
           $subscription = $x['is_subscribed'];
-          $searchFilterString = $x['custom_filter'];
+          
+          $saveState = $x['save_state'];
         }
     }
     
@@ -118,111 +119,7 @@
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="stats.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-        
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -231,41 +128,7 @@
 	<section class="app-content">
     <!--<h3 class="text-center" style="padding-bottom:20px;">User Settings</h3>-->
 
-    <div class="col-md-4 col-md-offset-4">
-      <div class="widget p-md clearfix text-center">
-    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Custom Game Status Category</h3>
-    <small>This input allows you to assign a custom category to your Game Library's Game Status. It will appear in all Game Library game's status dropdowns on add/edit and will set the red Stats Dashboard button to automatically search for it in your Game Library.</small><br><br>
-    <div class="form-group" id="changeAdminCredentials">
-    <form action="add_custom_filter.php" method="post">
-    <table align="center" style="margin: 0 auto;">
-        <tbody>
-        <tr> 
-            <td>
-                <input class="form-control simple-input" id="addCustomString" type="text" name="custom-string" style="font-size: 16px;" placeholder="Custom Filter Word" value="<?php echo $searchFilterString; ?>"/>
-            </td>
-        
-            <td><button id="setCustomString" type="submit" class="btn btn-success" style="margin-left: 10px;">Set</button></td>
-            
-        </tr>
-    </tbody>
-    </table>
-    </form>
-  </div>
-  </div>
-  <script>
-  $('#setCustomString').attr('disabled', true);
-$('#addCustomString').keyup(function () {
-   var disable = false;
-       $('#addCustomString').each(function(){
-            if($(this).val().length < 2){
-                 disable = true;      
-            }
-       });
-  $('#setCustomString').prop('disabled', disable);
-});
-</script>
-</div>   
-
+    
 
     <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix text-center">
@@ -369,6 +232,38 @@ $('#addCustomString').keyup(function () {
 
 <div class="col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix text-center">
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Save Library Filters</h3>
+    <?php if($saveState == 1) { ?>
+    <small>YOUR FILTER STATE IS SAVED.<br>To disable saving the configuration of the filters in your Game Library after leaving it, turn off the following switch and click "Set."</small><br><br>
+    <?php } else { ?>
+    <small>YOUR FILTER STATE IS NOT SAVED.<br>To save the configuration of the filters in your Game Library for 30 seconds after leaving it, turn on the following switch and click "Set."</small><br><br>
+    <?php } ?>
+    <div class="form-group" id="changeAdminCredentials">
+    <form action="save_state.php" method="post">
+    <table align="center" style="margin: 0 auto;">
+        <tbody>
+        <tr> 
+            <td>
+                <input id="stateSwitch" type="checkbox" data-switchery="true" data-size="small" name="save-state" style="font-size: 16px; margin-right: 2px;" value=""<?php if ($saveState == 1) { echo "checked"; } ?>/>
+                <label for="stateSwitch" style="margin-left: 2px;">Library State Save</label>
+            </td>
+            
+            <td>
+              <input type="hidden" name="email" value="<?php echo $userEmail; ?>">
+              <button id="changeState" disabled type="submit" class="btn btn-success" style="margin-left: 30px;">Set</button>
+            </td>
+            
+        </tr>
+    </tbody>
+    </table>
+    </form>
+  </div>
+  </div>
+
+</div>
+
+<div class="col-md-4 col-md-offset-4">
+      <div class="widget p-md clearfix text-center">
     <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Email Subscription</h3>
     <?php if($subscription == 1) { ?>
     <small>YOU ARE SUBSCRIBED TO GAMEAPP EMAILS.<br>By default, your account is subscribed to account-related automated emails sent by GameApp. If you would like to unsubscribe from these, simply turn off the following switch and click "Set." This can be modified at any time. </small><br><br>
@@ -398,6 +293,8 @@ $('#addCustomString').keyup(function () {
   </div>
 
 </div>
+
+
    
     <div class="text-center col-md-4 col-md-offset-4">
       <div class="widget p-md clearfix">
@@ -476,6 +373,30 @@ $('#changeAdminPasswordInput').keyup(function () {
 });
 </script>
 </div>   
+
+<div class="col-md-4 col-md-offset-4">
+      <div class="widget p-md clearfix text-center">
+    <h3 class="text-center" style="margin-top:8px; margin-bottom: 20px;">Delete GameApp Account</h3>
+    <small>To completely delete your GameApp account, click on the button.<br>WARNING - This is perminant and cannot be undone.</small><br><br>
+    <div class="form-group" id="deleteUserAccount">
+    <form action="delete_user_account.php" method="post">
+    <table align="center" style="margin: 0 auto;">
+        <tbody>
+        <tr> 
+            
+            <td>
+              <button id="deleteAccount" type="submit" onclick="return confirm('Are you sure you want to delete your GameApp account? This cannot be undone.');" class="btn btn-default">Delete</button>
+            </td>
+            
+        </tr>
+    </tbody>
+    </table>
+    </form>
+  </div>
+  </div>
+
+</div>
+
 <div class="col-md-12 clearfix"> </div>
 	</section><!-- #dash-content -->
 </div><!-- .wrap -->
@@ -484,7 +405,7 @@ $('#changeAdminPasswordInput').keyup(function () {
   <div class="col-md-12 p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>
@@ -552,6 +473,21 @@ $('#changeAdminPasswordInput').keyup(function () {
     
     });
   </script>
+
+   <script>
+  $(document).ready(
+    function(){
+
+      var changeCheckbox = document.querySelector('#stateSwitch');
+  
+
+    changeCheckbox.onchange = function() {
+    $('#changeState').attr('disabled',false);
+  };
+    
+    });
+  </script>
+
   <script>
   function clear_search() {
     var table = $('#library').DataTable();

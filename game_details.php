@@ -40,12 +40,15 @@ $query = "
         foreach ($rows as $x) {
           $id = $x['id'];
           $list = $x['list_type'];
+          $wishlistOrder = $x['wishlist_order'];
           $name = $x['name'];
           $knowledge = $x['gameplay_knowledge'];
           $rating = $x['rating'];
           $players = $x['players'];
           $type = $x['type'];
+          $type2 = $x['type2'];
           $cost = $x['cost'];
+          $publisher = $x['publisher'];
           $purchase = $x['purchase_date'];
           $url = $x['url'];
           $rules = $x['rules'];
@@ -65,6 +68,7 @@ $query = "
           $myplaytime = $x['my_playtime'];
           $myplayers = $x['my_players'];
           $playwith = $x['play_with'];
+          $linkedGame = $x['linked_game'];
           $mydescription = $x['my_description'];
             
         }
@@ -204,7 +208,7 @@ $query = "
 <div id="navbar-search" class="navbar-search collapse">
   <div class="navbar-search-inner">
     <form style="margin-top: 5px; display: inline-block; width: 100%">
-      <input class="form-control search-field" id="live-search" type="text" size="30" style="font-size: 16px;" onkeyup="showResult(this.value)" placeholder="Search your games" autofocus>
+      <input class="form-control search-field" id="live-search" type="text" size="30" style="font-size: 16px;" onkeyup="showResult(this.value)" placeholder="Search my games" autofocus>
       <div id="livesearch" style="font-size: 18px; padding: 5px; padding-top:52px; width: 100%;"></div>
     </form>
     <!--<form action="#">
@@ -219,125 +223,7 @@ $query = "
 </div><!-- .navbar-search -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-        
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="javascript:void(0)" data-toggle="collapse" class="livesearch" data-target="#navbar-search" aria-expanded="false">
-            <i class="menu-icon zmdi zmdi-hc-lg zmdi-search"></i>
-            <span class="menu-text">Search</span>
-          </a>
-        </li>
-
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -347,6 +233,9 @@ $query = "
     <?php
     if ($list == 1) {
       echo '<a href="library.php" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
+    }
+    elseif ($list == 3) {
+      echo '<a href="archive.php" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
     }
     else {
       echo '<a href="wish_list.php" style="color: silver;"><i class="fa fa-chevron-left fa-2x" style="padding-left: 15px;"></i></a>';
@@ -399,10 +288,16 @@ $query = "
         <span class="theme-inverse"></span>
       </div>
       <?php } 
-      else if ($list == 2) { ?>
-        <span class="theme-inverse"><a href="wish_list.php"><b>ON YOUR WISHLIST</b></a></span>
-        <span class="theme-inverse"></span>
-      <?php } 
+      else if ($list == 2) { 
+        if ($wishlistOrder) {
+          echo '<span class="theme-inverse"><a href="wish_list.php" style="display: inline;"><b>#'.$wishlistOrder.' ON MY WISHLIST</b></a><a href="edit_wishlist_rank.php?id='.$gameId.'" style="display: inline; color: lightgrey;"><span class="glyphicon glyphicon-pencil" style="font-size: 14px; padding-left: 8px;"></span></a></span>
+          <span class="theme-inverse"></span>';
+        }
+        else {
+          echo '<span class="theme-inverse"><a href="wish_list.php"><b>ON MY WISHLIST - '.strtoupper($status).'</b></a></span>
+          <span class="theme-inverse"></span>';
+        }
+       } 
       else if ($list == 3) { ?>
         <span class="theme-inverse"><form action="unarchive_game.php" method="post">
                 <?php echo '<input type="hidden" name="game-id" value="'.$gameId.'">'.
@@ -536,6 +431,7 @@ $query = "
   <section class="app-content">
     
     <div class="row" style="padding-top: 20px;padding-bottom: 20px;">
+     
         <?php 
         if ($knowledge == "Need Refresher" || $knowledge == "Need Rules") {
           $width = "140";
@@ -546,7 +442,7 @@ $query = "
       if ($list == 1) {
       echo '<div class="col-md-12 promo-tab text-center">';
         echo '<div class="text-center" style="display:inline-block;">';
-         echo '<form action="create_gameplay.php" method="post">';
+         echo '<form action="create_gameplay_live.php" method="post">';
               echo '<div style="border-top: 0px solid white;">';
                  echo '<input type="hidden" name="id" value="'.$gameId.'">';
                  echo '<input type="hidden" name="name" value="'.$name.'">';
@@ -591,6 +487,7 @@ $query = "
       echo '</div>';
     }
     ?>
+    
     </div>
 
     <div class="row">
@@ -641,8 +538,50 @@ $query = "
                   <hr>
                     <a href="javascript:void(0)" data-toggle="modal" data-target="#shareWishlist" aria-expanded="false" type="button" class="btn btn-default share-wishlist">Share Rules</a>
                   <?php } ?>
+
                 </div>
+
               </div><!-- .stream-post -->
+
+              <div class="m-t-l" style="margin-top: 10px;">
+                  <?php
+                  if ($linkedGame) {
+                    $query = " 
+                              SELECT * FROM game_details 
+                              WHERE 
+                                  id = :linkedgameid
+                                  AND user_id = :userid
+                          "; 
+                           
+                          $query_params = array( 
+                              ':linkedgameid' => $linkedGame,
+                              ':userid' => $_SESSION['userid']
+                          ); 
+                           
+                          try 
+                          { 
+                              $stmt = $db->prepare($query); 
+                              $result = $stmt->execute($query_params); 
+                          } 
+                          catch(PDOException $ex) 
+                          { 
+                              die($ex);
+                          } 
+
+                          $rowzz = $stmt->fetchAll();
+                          if ($rowzz) {
+                              foreach ($rowzz as $zz) {
+                                $linkedId = $zz['id'];
+                                $linkedName = $zz['name'];
+                              }
+                          }
+                      echo '<a href="link_game.php?id='.$gameId.'" style="color: #6A6C6F; text-decoration: none;"><h4 class="m-0 m-t-xs text-right" style="padding-top: 5px;"><span class="zmdi zmdi-hc-lg zmdi-link"></span>&nbsp;&nbsp;<a href="game_details.php?id='.$linkedId.'" style="color: #188ae2; text-decoration: none;">'.$linkedName.'</a></h4></a>';
+                  }
+                  else {
+                    echo '<h4 class="m-0 m-t-xs text-right" style="padding-top: 5px;"><a href="link_game.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="zmdi zmdi-hc-lg zmdi-link"></span>&nbsp;&nbsp;Link games</a></h4>';
+                  }
+                  ?>
+                </div>
 
               <div id="shareWishlist" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -755,6 +694,38 @@ $query = "
                   }
                   ?>
                   <?php
+                  if ($sort) {
+                    if ($sort == 'desc') {
+                      $scoring = "Highscore wins";
+                    }
+                    elseif ($sort == 'asc') {
+                      $scoring = "Lowscore wins";
+                    }
+                    elseif ($sort == 'coop') {
+                      $scoring = "Cooperative";
+                    }
+                    elseif ($sort == 'set') {
+                      $scoring = "Flat-point win";
+                    }
+                    elseif ($sort == 'money') {
+                      $scoring = "Currency";
+                    }
+                    elseif ($sort == 'other') {
+                      $scoring = "No points awarded";
+                    }
+                    elseif ($sort == 'lose') {
+                      $scoring = "Loser loses game";
+                    }
+                    else {
+                      $scoring = "Highscore wins";
+                    }
+                  
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Scoring: </td><td><a href="edit_scoring.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$scoring.'</a></td>';
+                      echo '</tr>';
+                  }
+                  ?>
+                  <?php
                   if ($myplaytime) {
                   echo '<tr>';
                     echo '<td style="padding-right: 10px; word-break: break-word;">Playtime: </td><td><a href="edit_playtime.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$myplaytime.' mins</a></td>';
@@ -767,9 +738,57 @@ $query = "
                   }
                   ?>
                   <?php
+                  if ($bggWeight) {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Weight: </td><td><a href="edit_weight.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.number_format((float)$bggWeight, 1, '.', '').'/5.0</a></td>';
+                      echo '</tr>';
+                  }
+                  else {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Weight: </td><td><a href="edit_weight.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
+                      echo '</tr>';
+                  }
+                  ?>
+                  <?php
+                  if ($type) {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Type 1: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$type.'</a></td>';
+                      echo '</tr>';
+                  }
+                  else {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Type 1: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
+                      echo '</tr>';
+                  }
+                  ?>
+                  <?php
+                  if ($type2) {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Type 2: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$type2.'</a></td>';
+                      echo '</tr>';
+                  }
+                  else {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Type 2: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
+                      echo '</tr>';
+                  }
+                  ?>
+                  <?php
                   if ($bggYear) {
                     echo '<tr>';
                       echo '<td style="padding-right: 10px; word-break: break-word;">Published: </td><td><a href="edit_published_year.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$bggYear.'</a></td>';
+                      echo '</tr>';
+                  }
+                  ?>
+                  <?php
+                  if ($publisher) {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Publisher: </td><td><a href="edit_publisher.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$publisher.'</a></td>';
+                      echo '</tr>';
+                  }
+                  else {
+                    echo '<tr>';
+                      echo '<td style="padding-right: 10px; word-break: break-word;">Publisher: </td><td><a href="edit_publisher.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
                       echo '</tr>';
                   }
                   ?>
@@ -797,18 +816,9 @@ $query = "
                     echo '</tr>';
                   }
                   ?>
-                  <?php
-                  if ($type) {
-                    echo '<tr>';
-                      echo '<td style="padding-right: 10px; word-break: break-word;">Type: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$type.'</a></td>';
-                      echo '</tr>';
-                  }
-                  else {
-                    echo '<tr>';
-                      echo '<td style="padding-right: 10px; word-break: break-word;">Type: </td><td><a href="edit_type.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
-                      echo '</tr>';
-                  }
-                  ?>
+
+                  
+                  
                   <?php
                   /*if ($bggType) {
                     echo '<tr>';
@@ -816,47 +826,8 @@ $query = "
                       echo '</tr>';
                   }*/
                   ?>
-                  <?php
-                  if ($sort) {
-                    if ($sort == 'desc') {
-                      $scoring = "Highscore wins";
-                    }
-                    elseif ($sort == 'asc') {
-                      $scoring = "Lowscore wins";
-                    }
-                    elseif ($sort == 'coop') {
-                      $scoring = "Cooperative";
-                    }
-                    elseif ($sort == 'set') {
-                      $scoring = "Flat-point win";
-                    }
-                    elseif ($sort == 'money') {
-                      $scoring = "Currency";
-                    }
-                    elseif ($sort == 'other') {
-                      $scoring = "No points awarded";
-                    }
-                    else {
-                      $scoring = "Highscore wins";
-                    }
                   
-                    echo '<tr>';
-                      echo '<td style="padding-right: 10px; word-break: break-word;">Scoring: </td><td><a href="edit_scoring.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.$scoring.'</a></td>';
-                      echo '</tr>';
-                  }
-                  ?>
-                  <?php
-                  if ($bggWeight) {
-                    echo '<tr>';
-                      echo '<td style="padding-right: 10px; word-break: break-word;">Weight: </td><td><a href="edit_weight.php?id='.$gameId.'" style="color: #6a6c6f; text-decoration: none;">'.number_format((float)$bggWeight, 1, '.', '').'/5.0</a></td>';
-                      echo '</tr>';
-                  }
-                  else {
-                    echo '<tr>';
-                      echo '<td style="padding-right: 10px; word-break: break-word;">Weight: </td><td><a href="edit_weight.php?id='.$gameId.'" style="color: #188ae2; text-decoration: none;"><span class="glyphicon glyphicon-plus" style="font-size:12px;top:-1px;"></span> Add</a></td>';
-                      echo '</tr>';
-                  }
-                  ?>
+                  
                   <?php
                   if ($url) {
                     echo '<tr>';
@@ -905,7 +876,7 @@ $query = "
                   
                   <?php if ($list == 1) { ?>
                 <div class="col-md-4 col-md-offset-4" style="padding-bottom: 20px;">
-                  <?php if ($sort != 'other' && $sort != 'coop' && $sort != 'set') { 
+                  <?php if ($sort != 'other' && $sort != 'coop' && $sort != 'set' && $sort != 'lose') { 
                     if ($sort == 'desc') {
                       $highscore = "(highest)";
                     }
@@ -1030,15 +1001,22 @@ $query = "
                     $averageWinningScore = ($totalWinningScores/$totalWinningScoreCount);
 
                       if ($averageWinningScore) {
-                        if ($highscore == '(currency)') {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">$'.round($averageWinningScore, 2).'</td>';
+                        if (is_nan($averageWinningScore)) {
+                          echo '<tr>';
+                            echo '<td style="padding-right: 10px;">No stats</td>';
                             echo '</tr>';
                         }
                         else {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">'.round($averageWinningScore, 2).'</td>';
-                            echo '</tr>';
+                          if ($highscore == '(currency)') {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">$'.round($averageWinningScore, 0).'</td>';
+                              echo '</tr>';
+                          }
+                          else {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">'.round($averageWinningScore, 0).'</td>';
+                              echo '</tr>';
+                          }
                         }
                       }
                      else {
@@ -1099,15 +1077,22 @@ $query = "
                     $averageLosingScore = ($totalLosingScores/$totalLosingScoreCount);
 
                       if ($averageLosingScore) {
-                        if ($highscore == '(currency)') {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">$'.round($averageLosingScore, 2).'</td>';
+                        if (is_nan($averageLosingScore)) {
+                          echo '<tr>';
+                            echo '<td style="padding-right: 10px;">No stats</td>';
                             echo '</tr>';
                         }
                         else {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">'.round($averageLosingScore, 2).'</td>';
-                            echo '</tr>';
+                          if ($highscore == '(currency)') {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">$'.round($averageLosingScore, 0).'</td>';
+                              echo '</tr>';
+                          }
+                          else {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">'.round($averageLosingScore, 0).'</td>';
+                              echo '</tr>';
+                          }
                         }
                       }
                      else {
@@ -1168,15 +1153,22 @@ $query = "
                     $averageScore = (($totalExtraScores+$totalWinningScores)/$totalScoreCount);
 
                       if ($averageLosingScore) {
-                        if ($highscore == '(currency)') {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">$'.round($averageScore, 2).'</td>';
+                        if (is_nan($averageScore)) {
+                          echo '<tr>';
+                            echo '<td style="padding-right: 10px;">No stats</td>';
                             echo '</tr>';
                         }
                         else {
-                            echo '<tr>';
-                            echo '<td style="padding-right: 10px;">'.round($averageScore, 2).'</td>';
-                            echo '</tr>';
+                          if ($highscore == '(currency)') {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">$'.round($averageScore, 0).'</td>';
+                              echo '</tr>';
+                          }
+                          else {
+                              echo '<tr>';
+                              echo '<td style="padding-right: 10px;">'.round($averageScore, 0).'</td>';
+                              echo '</tr>';
+                          }
                         }
                       }
                      else {
@@ -1242,7 +1234,7 @@ $query = "
                       $averagePlaytime = ($sumOfPlaytime/$timedGameCount);
                       if ($sumOfPlaytime) {
                             echo '<tr>';
-                            echo '<td style="padding-right: 10px; word-break: break-word;">'.round($averagePlaytime).' mins</td>';
+                            echo '<td style="padding-right: 10px; word-break: break-word;">'.round($averagePlaytime, 0).' mins</td>';
                             echo '</tr>';
                       }
                       else {
@@ -1256,7 +1248,14 @@ $query = "
                 <div class="clearfix"></div>
                   <table class="table table-sm" style="font-size:18px;">
                     <thead style="background-color: #5B69BC; color: white;">
-                      <tr><td ><b>Number of wins:</b></td><td>&nbsp;</td></tr>
+                      <?php
+                      if ($sort == 'lose') {
+                        echo '<tr><td ><b>Number of losses:</b></td><td>&nbsp;</td></tr>';
+                      }
+                      else {
+                        echo '<tr><td ><b>Number of wins:</b></td><td>&nbsp;</td></tr>';
+                      }
+                      ?>
                     </thead>
                   <?php
                     $query = " 
@@ -1286,7 +1285,7 @@ $query = "
                         foreach ($rows as $x) {
                           if ($x['winner']) {
                             echo '<tr>';
-                            echo '<td style="padding-right: 10px;">'.$x['winner'].'</td><td>'.$x['COUNT(case when winner is null then game_id else winner end)'].'</td>';
+                            echo '<td style="padding-right: 10px;">'.ucfirst($x['winner']).'</td><td>'.$x['COUNT(case when winner is null then game_id else winner end)'].'</td>';
                             echo '</tr>';
                           }
                           else {
@@ -1326,9 +1325,15 @@ $query = "
 
       
     </div><!-- .row -->
-
+    <?php 
+      if ($list == 1 || ($list == 2 && $wishlistOrder != null) || $list == 3) {
+        echo '<a href="previous_game.php?name='.$name.'&list='.$list.'&order='.$wishlistOrder.'" style="float:left; margin: 20px 0px;"><button id="previousGame" class="btn btn-default" style="width: 105px;"><i class="zmdi zmdi-long-arrow-left"></i> Previous</button></a>
+        <a href="next_game.php?name='.$name.'&list='.$list.'&order='.$wishlistOrder.'" style="float:right; margin: 20px 0px;"><button id="nextGame" class="btn btn-default" style="width: 105px;">Next <i class="zmdi zmdi-long-arrow-right"></i></button></a>';
+      }
+    ?>
     
   </section><!-- #dash-content -->
+
 </div><!-- .row -->
 
 
@@ -1336,7 +1341,7 @@ $query = "
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

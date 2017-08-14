@@ -47,6 +47,7 @@
             $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
             $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
             $bggYear = $sxml->boardgame[0]->yearpublished;
+            $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
             $bggImageThumb = $sxml->boardgame[0]->thumbnail;
             $bggImageUrl = 'https:'.$bggImageThumb;
             
@@ -97,20 +98,69 @@
         }
 
         
+        $minPlayers = $_POST['minPlayers'];
+        $maxPlayers = $_POST['maxPlayers'];
+
+        if (!$_POST['maxPlayers']) {
+            $maxPlayers = $_POST['minPlayers'];
+        }
+
         
+        if ($_POST['publisher']) {
+            $publisher = $_POST['publisher'];
+        }
+        elseif ($bggPublisher) {
+            $publisher = $bggPublisher;
+        }
+        else {
+            $publisher = null;
+        }
+
+        
+        if ($_POST['status'] == 'Want') {
+                $query = " 
+                    SELECT COUNT(*) 
+                    FROM game_details
+                    WHERE wishlist_order IS NOT null AND user_id = :userid AND list_type = :listtype;
+                "; 
+                 
+                $query_params = array( 
+                    ':userid' => $_SESSION['userid'],
+                    ':listtype' => 2
+                ); 
+                 
+                try 
+                { 
+                    $result = $db->prepare($query); 
+                    $result->execute($query_params); 
+                    $wishlistGameCount = $result->fetchColumn(0);
+                } 
+                catch(PDOException $ex) 
+                { 
+                    die($ex); 
+                } 
+
+                $wishlistOrder = $wishlistGameCount + 1;
+            }
+            else {
+                $wishlistOrder = null;
+            }
 
 
         $query = " 
             INSERT INTO game_details ( 
                 user_id,
                 list_type,
+                wishlist_order,
                 name, 
                 timestamp,
                 gameplay_knowledge, 
                 type, 
+                type2,
                 rating, 
                 players, 
                 cost, 
+                publisher,
                 purchase_date,
                 url, 
                 rules,
@@ -127,18 +177,23 @@
                 status,
                 my_playtime,
                 my_players,
+                min_players,
+                max_players,
                 add_source
                 
             ) VALUES (
                 :userid, 
                 :listtype,
+                :wishlistorder,
                 :name, 
                 :timestamp,
                 :knowledge, 
                 :type, 
+                :type2,
                 :rating, 
                 :players, 
                 :cost, 
+                :publisher,
                 :date, 
                 :url,
                 :rules,
@@ -155,6 +210,8 @@
                 :status,
                 :myplaytime,
                 :myplayers,
+                :minplayers,
+                :maxplayers,
                 :addsource
 
             ) 
@@ -163,13 +220,16 @@
         $query_params = array( 
             ':userid' => $_SESSION['userid'],
             ':listtype' => $listType,
+            ':wishlistorder' => $wishlistOrder,
             ':name' => $_POST['name'],
             ':timestamp' => $timestamp,
             ':knowledge' => $_POST['knowledge'],
             ':type' => $_POST['type'],
+            ':type2' => $_POST['type2'],
             ':rating' => $_POST['rating'],
             ':players' => $players,
             ':cost' => $_POST['cost'],
+            ':publisher' => $publisher,
             ':date' => $_POST['purchaseDate'],
             ':url' => $bggUrl,
             ':rules' => $_POST['rules'],
@@ -186,6 +246,8 @@
             ':status' => $_POST['status'],
             ':myplaytime' => $bggPlayTime,
             ':myplayers' => $players,
+            ':minplayers' => $minPlayers,
+            ':maxplayers' => $maxPlayers,
             ':addsource' => 'Manual'
             
         ); 

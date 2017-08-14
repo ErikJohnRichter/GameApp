@@ -110,117 +110,7 @@ $search = $_GET['search'];
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar light">
-  <div class="app-user">
-    <div class="media">
-      <div class="media-left">
-        <div class="avatar avatar-md avatar-circle">
-          <?php echo '<a href="javascript:void(0)"><img class="img-responsive" src="assets/images/'.$_SESSION['picture'].'" alt="avatar"/></a>'; ?>
-        </div><!-- .avatar -->
-      </div>
-      <div class="media-body">
-        <div class="foldable">
-          <h5><a href="javascript:void(0)" class="username">Hey <?php echo ucfirst($_SESSION['username']); ?>!</a></h5>
-          <ul>
-            <li class="dropdown">
-              <a href="javascript:void(0)" class="dropdown-toggle usertitle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <small>Options</small>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="text-color" href="library.php">
-                    <span class="m-r-xs"><i class="fa fa-home"></i></span>
-                    <span>Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="profile.php">
-                    <span class="m-r-xs"><i class="fa fa-user"></i></span>
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li>
-                  <a class="text-color" href="settings.php">
-                    <span class="m-r-xs"><i class="fa fa-gear"></i></span>
-                    <span>Settings</span>
-                  </a>
-                </li>
-                <li role="separator" class="divider"></li>
-                <li>
-                  <a class="text-color" href="logout.php">
-                    <span class="m-r-xs"><i class="fa fa-sign-out"></i></span>
-                    <span>Logout</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div><!-- .media-body -->
-    </div><!-- .media -->
-  </div><!-- .app-user -->
-
-  <div class="menubar-scroll">
-    <div class="menubar-scroll-inner">
-      <ul class="app-menu">
-        <li>
-          <a href="stats.php">
-            <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
-            <span class="menu-text">Game Stats</span>
-          </a>
-        </li>
-        
-        <li>
-          <a href="library.php">
-            <i class="menu-icon zmdi zmdi-library zmdi-hc-lg"></i>
-            <span class="menu-text">Game Library</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="wish_list.php">
-            <i class="menu-icon zmdi zmdi-cake zmdi-hc-lg"></i>
-            <span class="menu-text">Wish List</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="profile.php">
-            <i class="menu-icon zmdi zmdi-account zmdi-hc-lg"></i>
-            <span class="menu-text">Profile</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="social.php">
-            <i class="menu-icon zmdi zmdi-accounts zmdi-hc-lg"></i>
-            <span class="menu-text">Social</span>
-          </a>
-        </li>
-
-        <li>
-          <a href="settings.php">
-            <i class="menu-icon zmdi zmdi-settings zmdi-hc-lg"></i>
-            <span class="menu-text">Settings</span>
-          </a>
-        </li>
-
-        <li class="menu-separator"><hr></li>
-
-        <li>
-          <a href="help.php">
-            <i class="menu-icon zmdi zmdi-help-outline zmdi-hc-lg"></i>
-            <span class="menu-text">Help</span>
-          </a>
-        </li>
-        
-      </ul><!-- .app-menu -->
-    </div><!-- .menubar-scroll-inner -->
-  </div><!-- .menubar-scroll -->
-</aside>
+<?php include("side_bar.php"); ?>
 <!--========== END app aside -->
 
 <!-- APP MAIN ==========-->
@@ -339,38 +229,45 @@ $search = $_GET['search'];
             </div>
             <div id="collapse-3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-3">
              <div class="panel-body">
-              <p><b>Search for any game in the whole world</b><br>
+              <p><b>Search for any game in the whole world?</b><br>
                   -On the <a href="stats.php">Stats</a> page, find the search input and type in any game your heart desires. Use the results to quickly see its basic information or "Add to Library" or "Add to Wishlist."</p>
                   <br>
-                <p><b>Search only for the games on my lists</b><br>
+                <p><b>Search only for the games on my lists?</b><br>
                   -On the <a href="stats.php">Stats</a> page, click the magnifying glass icon in the top navbar. A search input will appear. When you start typing a list of all games in your lists that match that string will appear.<br>
                   -Alternately, you may visit your Game Library or Wishlist and search the table directly. From here, you may search for any data field in your game.</p>
+                  <br>
+                <p><b>Search for one of my games that meets a specific number of criteria?</b><br>
+                  -On the <a href="stats.php">Stats</a> page or in your <a href="library.php">Game Library</a>, click <a href="advanced_search.php">Advanced Search</a>.</p>
                   <br>
                 <p><b>Hook up with BoardGameGeek?</b><br>
                   -On the <a href="stats.php">Stats</a> page, search BGG for the game you want to add to your Library or Wishlist. Once in that game's details, simply click "Add to Library" or "Add to Wishlist."<br>
                   -Importing your BGG collections into GameApp automatically integrates your games with BGG.
                   -If you manually add or edit a game, place the BGG Url (including https://) into the provided input and save. GameApp will do the rest. If you do not, readily, have the specific BGG URL for the game you're adding, by checking the "Auto-search BGG" box when adding a game, GameApp will automatically search BGG based on the name you enter. If no or multiple results are returned, no URL will be assigned. This feature is currently in beta.</p>
                   <br>
-                <p><b>Import my existing BoardGameGeek Collection</b><br>
+                <p><b>Import my existing BoardGameGeek Collection?</b><br>
                   -In <a href="settings.php">Settings</a>, find "Import BGG Collection" and type in the name of the BGG user's collection you would like to import. Follow the instructions on the screen"<br>
                   <br>
-                <p><b>Add a game without BoardGameGeek integrations</b><br>
+                <p><b>Add a game without BoardGameGeek integrations?</b><br>
                   -The great thing about GameApp is it works independently of BGG! At the top of any main page, click the "+" button. From here, fill in all of the game's details and press "Save."</p>
                   <br>
                 <p><b>Change my game's details?</b><br>
                   -On the Game Details page, click on any of the data fields in the three primary boxes under the game name or on any of the details in the Info tab to edit them. If you have or add an associated BGG Url for a game, many fields will auto-generate. If you want to assign your own data to any given field, simply edit the field and save. Existing BGG data will remain in place along with your desired changes.</p>
+                  <br>
+                <p><b>Edit a number of games at once?</b><br>
+                  -In your <a href="library.php">Game Library</a>, click <a href="bulk_edit_select.php">Bulk Edit</a> and select the games you would like to bulk edit details on.<br>
+                  -Whatever you fill into the edit form will be applied, unanimously, to each of your Bulk Edit selected games.</p>
                   <br>
                 <p><b>Add game scoring logic?</b><br>
                   -When you add a game manually or edit its scoring data (either from Game Info or the Create a Gameplay page), you may select the mechanics of the game's scoring to "Highscore wins," "Lowscore wins," "No scoring," "Set-point-win," "Currency," or "Cooperative." Without being set, a game will default to "Highscore wins." This field will affect a game's best/worst score stats and how players are logged in gameplays.</p>
                   <br>
                 <p><b>Log a gameplay?</b><br>
                   -When a game is in your Game Library, from the Game Details page, click "Log a Gameplay." Confirm the scoring logic is set appropriately, and then fill in the gameplay details.<br>
-                  -You must log, at least, one player's name (if there are no players in the Player dropdown list, visit your <a href="profile.php">Profile</a> to add some). If you just log one player, that player will be considered the winner. If you select multiple players, all player names and scores must be logged. If this is the case, GameApp will automatically discover the winning and losing scores based on the game's scoring logic.</p>
+                  -You must log, at least, one player's name. If the added player is not in the Player auto-complete list, you may continue type the player's name in the input or visit your <a href="profile.php">Profile</a> to add that player. If you just log one player, that player will be considered the winner. If you select multiple players, all player names and scores must be logged. If this is the case, GameApp will automatically discover the winning and losing scores based on the game's scoring logic.</p>
                   <br>
                 <p><b>Log a team win?</b><br>
-                  -If you want to log a team win (rather than a single player win) in a gameplay, add the team "as a single player" to your Player List in your <a href="profile.php">Profile</a>. When you log your gameplay, select the team you added from the Player dropdown.</p>
+                  -If you want to log a team win (rather than a single player win) in a gameplay, add the team "as a single player" to the player input or to your Player List in your <a href="profile.php">Profile</a>.</p>
                   <br>
-                <p><b>Transfer a game from my wish list to my game library?</b><br>
+                <p><b>Transfer a game from my Wishlist to my Game Library?</b><br>
                   -When you acquire a game on your wishlist, there is no need to re-enter everything in your library. Simply go to that game's details and click "Add to my library." This will transfer that game over to your Game Library and mark the game's status as "Need Rules" or "Great" depending on its data.</p>
                   <br>
                 <p><b>Quickly see what games I need to brush up on?</b><br>
@@ -379,16 +276,26 @@ $search = $_GET['search'];
                 <p><b>Add custom rules?</b><br>
                   -In the Game Details page, select the "Rules" tab and click on the pencil icon inside of it.</p>
                   <br>
+                <p><b>Order the ranking of my Wishlist games?</b><br>
+                  -In your <a href="wish_list.php">Wishlist</a>, any game with the Status of "Want" is assigned a wishlist rank and placed at the bottom of your wanted games list. This is so you (and your friends and family if your Wishlist is made public (see below)) know which games to buy first. To change a game's ranking, click on the up or down arrows next to it in your Wishlist, or edit the rank directly in its Game Details.</p>
+                  <br>
+                <p><b>Save my Game Library filters?</b><br>
+                  -To save the configuration of the filters in your Game Library for 30 seconds after leaving it, either in your <a href="settings.php">Settings</a> or at the bottom of your <a href="library.php">Game Library</a>, toggle the "Save State" button to "On."</p>
+                  <br>
+                <p><b>Add custom Game Types?</b><br>
+                  -GameApp comes equipt with a pre-populated list of popular game types you may assign to your games' details. However, you may also add your own custom types. In your <a href="profile.php">Profile</a>, the My Custom Types section allows you to add custom game types to the list of types you can assign to your games.</p>
+                  <br>
                 <p><b>Add custom Game Status?</b><br>
-                  -In <a href="settings.php">Settings</a>, the Custom Game Status input allows you to assign a custom category to your Game Library's Game Status. It will appear in all Game Library game's status dropdowns on add/edit and will set the red Stats Dashboard button to automatically search for it in your Game Library. Some good examples of a custom status would be "Need to Learn" or "Party Game."</p>
+                  -In your <a href="profile.php">Profile</a>, create a custom status for your Game Library's game statuses. Adding this will also set the red Stats Dashboard button to automatically search for this word in your Game Library's game statuses and/or notes. Some good examples of a custom status would be "Need to Learn," or "Party Games," or "On iOS/Android"...something you use, or could use, often.<br>
+                  -If you change your custom status, all previously-assigned custom statuses will remain on their respective games, however, you will not be able to add or edit other games to include the old custom statuses.</p>
                   <br>
                 <p><b>I have a game in my Wishlist that I don't want to delete but I don't want to keep it there either. What do I do?</b><br>
-                  -Archive it! Simply click the edit pencil at the top of the Game Details page and press the "Archive" button. To re-add these archived games or delete them, access your Archive List in your profile.</p>
+                  -Archive it! Simply click the edit pencil at the top of the Game Details page and press the "Archive" button. To re-add these archived games to your Wishlist or delete them entirely, visit your <a href="archive.php">Archive</a> from the bottom of your Wishlist.</p>
                   <br>
                 <p><b>My Public Wishlist details are not showing. Why?</b><br>
                   -By default, your Wishlist is private. If you would like others to see the titles on your Wishlist with the Status: "Want," visit your <a href="settings.php">Settings</a> and flip the switch to make them public.</p>
                   <br>
-                <p><b>Let other users see my Game Library and Wishlist</b><br>
+                <p><b>Let other users see my Game Library and Wishlist?</b><br>
                   -By default, your Game Library and Wishlists are private. If you would like others to see these, visit your <a href="settings.php">Settings</a> and flip the switchs to make either or both public.</p>
                   <br>
               </div>
@@ -420,10 +327,9 @@ $search = $_GET['search'];
             </div>
             <div id="collapse-5" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-5">
               <div class="panel-body">
-                <p>State is saved on the library table for 6 seconds. I did this so a user could return to the library, after quickly viewing game details, and have its settings as they were before leaving and not reset to default. Why 6? Because I felt 7 was too long and 5 was too short. This was a UX decision, but will cause an issue if a user uses a stat's library link before the 6 second gap is up (a filtered link will return the user to the library as it was when previously left if 6 seconds has not elapsed since).</p><br>
                 <p>Upcoming Features:
                   <br>
-                -Automatically get game prices and set them (while remaining editable).<br>
+                -Automatically get and set gameprices.<br>
                 -Sync BGG gameplays with GameApp.<br>
                 -Various performance improvements.</p>
                 
@@ -441,7 +347,7 @@ $search = $_GET['search'];
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

@@ -100,7 +100,7 @@
       <span class="hamburger-box"><span class="hamburger-inner"></span></span>
     </button>
 
-    <a href="index.php" class="navbar-brand">
+    <a href="welcome.html" class="navbar-brand">
       <span class="brand-icon"><i class="fa fa-gg"></i></span>
       <span class="brand-name">GameApp</span>
     </a>
@@ -160,13 +160,13 @@
   <section class="app-content">
     <div class="row text-center">
       <div class="col-md-4 col-md-offset-4" style="margin-bottom: 30px;">
-        <h3 class="profile-info-name" style="font-size: 30px; margin-top: 15px; margin-bottom: 10px;"><?php if ($public == 1) { echo $name."'s"; } else { echo "GameApp"; } ?> Wishlist</h3>
-      <?php if ($public == 1) { echo '<small>(To get purchasing info, click on the game)</small>'; } ?><br>
+        <h3 class="profile-info-name" style="font-size: 30px; margin-top: 15px; margin-bottom: 10px;"><?php if ($public == 1) { echo $name."'s "; }?>Wishlist</h3>
+      <?php if ($public == 1) { echo '<small>(To get boardgame purchasing info, click on the game)</small>'; } ?><br>
       </div>
 
     </div>
     <div class="row">
-      <div class="col-md-4 col-md-offset-4">
+      <div class="col-lg-6 col-lg-offset-3">
         <div class="widget p-md clearfix">
           <table class="table table-hover">
         
@@ -179,6 +179,7 @@
                       user_id = :userid AND
                       list_type = :listtype AND
                       status = :status
+                      ORDER BY wishlist_order asc
                       
                       
               "; 
@@ -206,21 +207,33 @@
                   echo '<tr><td>&nbsp;</td><td><b>Game name</b></td><td><b>Cost</b></td></tr>';
                 echo '</thead>';
                   // output data of each row
+                  $i = 1;
                   foreach ($rows as $x) {
                     $searchName = $x['name'];
                     $searchName = str_replace(' ','%20',$searchName);
-                       echo '<tr class="clickable-row" data-href="http://www.boardgameprices.com/compare-prices-for?q='.$searchName.'">';
+                    
+                       echo '<tr class="clickable-row even" data-href="http://www.boardgameprices.com/compare-prices-for?q='.$searchName.'">';
+
+                        //echo '<td style="width:3px;">'.$i.'</td>';
+
                         if ($x['bgg_id']) {
-                            echo '<td style="width:15%;"><img src="images/'.$x['bgg_id'].'.jpg" style="max-height:100px;max-width:50px;"/></td>';
-                          }
-                        echo '<td>'.$x['name'].'</td>';
-                        if ($x['cost']) {
-                          echo '<td>$'.$x['cost'].'</td>';
+                          echo '<td style="width:60px;"><img src="images/'.$x['bgg_id'].'.jpg" style="max-height:100px;max-width:50px;"/></td>';
                         }
                         else {
-                          echo '<td>Not listed</td>';
+                          echo '<td style="width:60px;"><img src="images/noimage.jpg" style="max-height:100px;max-width:50px;"/></td>';
                         }
+
+                        echo '<td>'.$x['name'].'</td>';
+
+                        if ($x['cost']) {
+                          echo '<td style="width:60px;">$'.$x['cost'].'</td>';
+                        }
+                        else {
+                          echo '<td style="width:60px;">&nbsp;</td>';
+                        }
+
                         echo '</tr>';
+                        $i++;
                   }
               } else {
                   echo "<tr><td style='border-top: 0px solid white;'>".$name." does not want any boardgames right now.</td></tr>";
@@ -239,7 +252,7 @@
   <div class="wrap p-t-0">
     <footer class="app-footer">
       <div class="clearfix">
-        <div class="copyright pull-right">&copy; CodingErik 2017</div>
+        <?php include("copywrite.php"); ?>
       </div>
     </footer>
   </div>

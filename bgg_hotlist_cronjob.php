@@ -47,6 +47,7 @@
             //$bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
             //$bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
             $bggYear = $sxml->boardgame[0]->yearpublished;
+            $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
             $bggImageThumb = $sxml->boardgame[0]->thumbnail;
             $bggImageUrl = 'https:'.$bggImageThumb;
             

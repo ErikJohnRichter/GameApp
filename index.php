@@ -5,6 +5,73 @@
         header("Location: stats.php"); 
         die("Redirecting to: stats.php"); 
     }
+    elseif ($_COOKIE['game-remember']) {
+        $query = " 
+            SELECT 
+                id, 
+                username, 
+                password, 
+                salt, 
+                email,
+                picture,
+                first,
+                custom_filter,
+                save_state
+            FROM users 
+            WHERE 
+                username = :username 
+        "; 
+         
+        $query_params = array( 
+            ':username' => $_COOKIE['game-username'] 
+        ); 
+         
+        try 
+        { 
+            $stmt = $db->prepare($query); 
+            $result = $stmt->execute($query_params); 
+        } 
+        catch(PDOException $ex) 
+        { 
+            die("Sorry, there was an error. Please try again.");
+            
+            /*die("Failed to run query: " . $ex->getMessage()); */
+        } 
+         
+        $login_ok = false; 
+         
+        $row = $stmt->fetch(); 
+        if($row) 
+        { 
+            $check_password = hash('sha256', $_COOKIE['game-password'] . $row['salt']); 
+            for($round = 0; $round < 65536; $round++) 
+            { 
+                $check_password = hash('sha256', $check_password . $row['salt']); 
+            } 
+             
+            if($check_password === $row['password']) 
+            { 
+                $login_ok = true; 
+            } 
+        } 
+         
+        if($login_ok) 
+        { 
+            unset($row['salt']); 
+            unset($row['password']); 
+             
+            $_SESSION['user'] = $row;
+            $_SESSION['userid'] = $row['id'];
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['picture'] = $row['picture'];
+            $_SESSION['first'] = $row['first'];
+            $_SESSION['customfilter'] = $row['custom_filter'];
+            $_SESSION['savestate'] = $row['save_state'];
+
+            header("Location: stats.php"); 
+            die("Redirecting to: stats.php"); 
+        } 
+    }
 
 ?>
 
@@ -19,6 +86,8 @@
   <link rel="shortcut icon" sizes="196x196" href="assets/images/logo.png">
   <link rel="apple-touch-icon" href="assets/images/GameAppLogoIcon.png" />
   <title>GameApp</title>
+  <meta name="keywords" content="GameApp, game, boardgame, tabletop, gaming, Erik Richter, erik, richter, apps" />
+  <meta name="description" content="The clean and simple boardgame manager. Everything you need. Nothing you don't." />
   <link rel="stylesheet" href="libs/bower/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="libs/bower/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
   <link rel="stylesheet" href="libs/bower/animate.css/animate.min.css">

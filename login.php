@@ -25,7 +25,12 @@
                 salt, 
                 email,
                 picture,
-                custom_filter
+                first,
+                custom_filter,
+                save_state,
+                square_1,
+                square_2,
+                square_3
             FROM users 
             WHERE 
                 username = :username 
@@ -73,7 +78,12 @@
             $_SESSION['userid'] = $row['id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['picture'] = $row['picture'];
+            $_SESSION['first'] = $row['first'];
             $_SESSION['customfilter'] = $row['custom_filter'];
+            $_SESSION['savestate'] = $row['save_state'];
+            $_SESSION['square1'] = $row['square_1'];
+            $_SESSION['square2'] = $row['square_2'];
+            $_SESSION['square3'] = $row['square_3'];
 
             header("Location: stats.php"); 
             die("Redirecting to: stats.php"); 

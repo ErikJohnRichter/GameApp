@@ -21,6 +21,7 @@
           $bggMaxPlayTime = $sxml->boardgame[0]->maxplaytime;
           $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
           $bggYear = $sxml->boardgame[0]->yearpublished;
+          $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
           /*$bggGameName = $sxml->boardgame[0]->name;*/
           $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
 
@@ -64,6 +65,13 @@
 
         $timestamp = date('Y-m-d G:i:s', strtotime('-6 hours'));
 
+        if ($bggPublisher) {
+            $publisher = $bggPublisher;
+        }
+        else {
+            $publisher = null;
+        }
+
         $playerDifference = $bggMinPlayers - $bggMaxPlayers;
         
         if ($_POST['bggUrl']) {
@@ -93,7 +101,6 @@
                 bgg_rating=:bggrating,
                 bgg_description=:bggdescription,
                 bgg_weight=:bggweight,
-                bgg_type=:bggtype,
                 bgg_year=:bggyear
             
             WHERE
@@ -110,7 +117,6 @@
             ':bggrating' => $bggRating,
             ':bggdescription' => $bggDescription,
             ':bggweight' => $bggWeight,
-            ':bggtype' => $bggPlayType,
             ':bggyear' => $bggYear,
             ':gameid' => $_POST['game-id'],
             ':userid' => $_SESSION['userid']

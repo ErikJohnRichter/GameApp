@@ -37,6 +37,7 @@
             $bggPlayType = $sxml->boardgame[0]->boardgamesubdomain;
             $bggWeight = $sxml->boardgame[0]->statistics->ratings->averageweight;
             $bggYear = $sxml->boardgame[0]->yearpublished;
+            $bggPublisher = $sxml->boardgame[0]->boardgamepublisher;
 
             if ($bggMaxPlayTime != 0) {
                 $bggPlayTime = round((($bggMinPlayTime + $bggMaxPlayTime)/2));
@@ -54,6 +55,15 @@
                 $players = $bggMinPlayers."-".$bggMaxPlayers;
             }
 
+            $minPlayers = $bggMinPlayers;
+            $maxPlayers = $bggMaxPlayers;
+
+            if (!$bggMaxPlayers) {
+                $maxPlayers = $bggMinPlayers;
+            }
+
+            
+
         $query = " 
             INSERT INTO game_details ( 
                 user_id,
@@ -65,6 +75,7 @@
                 rating, 
                 players, 
                 cost, 
+                publisher,
                 purchase_date,
                 url, 
                 rules,
@@ -80,6 +91,8 @@
                 status,
                 my_playtime,
                 my_players,
+                min_players,
+                max_players,
                 add_source
                 
             ) VALUES (
@@ -91,7 +104,8 @@
                 :type, 
                 :rating, 
                 :players, 
-                :cost, 
+                :cost,
+                :publisher, 
                 :date, 
                 :url,
                 :rules,
@@ -107,6 +121,8 @@
                 :status,
                 :myplaytime,
                 :myplayers,
+                :minplayers,
+                :maxplayers,
                 :addsource
             ) 
         "; 
@@ -121,6 +137,7 @@
             ':rating' => "",
             ':players' => $players,
             ':cost' => "",
+            ':publisher' => $bggPublisher,
             ':date' => "",
             ':url' => $bggUrl,
             ':rules' => "",
@@ -136,6 +153,8 @@
             ':status' => $status,
             ':myplaytime' => $bggPlayTime,
             ':myplayers' => $players,
+            ':minplayers' => $minPlayers,
+            ':maxplayers' => $maxPlayers,
             ':addsource' => 'BGG'
             
         ); 
